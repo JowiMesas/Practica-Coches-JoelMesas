@@ -7,6 +7,57 @@
     <script src="index.js" defer></script>
 </head>
 <body>
-    
+    <div class="section-participantes">
+        <h2>Gestión de Participantes</h2>
+
+        <label for="nombre-participante">
+            Nombre Participante:
+        </label>
+        <input type="text" name="nombre-participante" list="lista-participantes">
+        <datalist id="lista-participantes"></datalist>
+        <br> <br>
+        <label for="vehiculo-participante"> Vehiculo Participante: </label>
+        <select  id="vehiculo-participante"></select>
+        <button id="guardar-participante">Guardar Participante</button>
+        <button id="cargar-estadisticas-participante">Cargar Estadísticas</button>
+        <h3>Estadisticas Participante</h3>
+        <label for="estadisticas-primero">Primeros Puestos:</label>
+        <input type="number" id="estadisticas-primero" value="0" readonly>
+        <br> <br>
+        <label for="estadisticas-segundo">Segundos Puestos:</label>
+        <input type="number" id="estadisticas-segundo" value="0" readonly>
+        <br> <br>
+        <label for="estadisticas-tercero">Terceros Puestos:</label>
+        <input type="number" id="estadisticas-tercero" value="0" readonly>
+        <br> <br>
+        <label for="estadisticas-fuera-podio">Fuera del Podio:</label>
+        <input type="number" id="estadisticas-fuera-podio" value="0" readonly>
+    </div>
+    <br>
+    <div id="section-gestion-vehiculos">
+        <h2>Nuevo Vehiculo</h2>
+        <label for="modelo-vehiculo">Modelo: </label>
+        <input type="text" name="modelo-vehiculo" list="lista-vehiculos">
+        <datalist id="lista-vehiculos"></datalist>
+        <label for="minVelocidad"> Velocidad Minima: </label>
+        <input type="number" name="minVelocidad" min="0" placeholder="Min Vel">
+        <label for="maxVelocidad">Velocidad Maxima: </label>
+        <input type="number" name="maxVelocidad" min="10" placeholder="Max Vel">
+        <br> <br>
+        <label for="tipoTraccion">Tipo Tracción: </label>
+        <select  id="tipoTraccion">
+            <option value="dura"></option>
+            <option value="media"></option>
+            <option value="blanda"></option>
+        </select>
+        <br> <br>
+        <label for="tipoVehiculo">Tipo Vehiculo: </label>
+        <select id="tipoVehiculo">
+            <option value="Moto"></option>
+            <option value="Coches"></option>
+        </select>
+         <button id="nuevo-vehiculo">Nuevo Vehiculo</button>
+         <button id="estadisticas-vehiculo">Cargar Estadisticas</button>
+    </div>
 </body>
 </html>
