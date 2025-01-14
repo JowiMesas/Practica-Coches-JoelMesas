@@ -13,7 +13,7 @@
         <label for="nombre-participante">
             Nombre Participante:
         </label>
-        <input type="text" name="nombre-participante" list="lista-participantes">
+        <input type="text" name="nombre-participante" id="seleccion-participantes" list="lista-participantes">
         <datalist id="lista-participantes"></datalist>
         <br> <br>
         <label for="vehiculo-participante"> Vehiculo Participante: </label>
@@ -37,7 +37,7 @@
     <div id="section-gestion-vehiculos">
         <h2>Nuevo Vehiculo</h2>
         <label for="modelo-vehiculo">Modelo: </label>
-        <input type="text" name="modelo-vehiculo" list="lista-vehiculos">
+        <input type="text" name="modelo-vehiculo" id="seleccion-vehiculos" list="lista-vehiculos">
         <datalist id="lista-vehiculos"></datalist>
         <label for="minVelocidad"> Velocidad Minima: </label>
         <input type="number" name="minVelocidad" min="0" placeholder="Min Vel">
@@ -58,6 +58,29 @@
         </select>
          <button id="nuevo-vehiculo">Nuevo Vehiculo</button>
          <button id="estadisticas-vehiculo">Cargar Estadisticas</button>
+    </div>
+    <br>
+    <div class="section-nuevo-circuito">
+        <h2>Nuevo Circuito</h2>
+        <br>
+        <label for="nombre-circuito">Nombre Circuito: </label>
+        <input type="text" id="nombre-circuito" placeholder="Nombre del Circuito">
+        <br> <br>
+        <label for="longitud">Longitud: </label>
+        <input type="number" id="longitud" min="100" placeholder="Introduce la longitud">
+        <br> <br>
+        <label for="tiempo">Tiempo: </label>
+        <select id="tiempo">
+            <option value="lluvioso">Lluvioso</option>
+            <option value="humedo">Humedo</option>
+            <option value="seco">Seco</option>
+        </select>
+        <br> <br>
+        <button id="nueva-carrera">Nueva Carrera</button>
+    </div>
+    <br>
+    <div class="section-assignar-participante">
+        <label for="circuito">Circuitos: </label>
     </div>
 </body>
 </html>
