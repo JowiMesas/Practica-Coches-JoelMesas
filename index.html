@@ -76,11 +76,31 @@
             <option value="seco">Seco</option>
         </select>
         <br> <br>
-        <button id="nueva-carrera">Nueva Carrera</button>
+        <button id="nuevo-circuito">Nueva Carrera</button>
     </div>
     <br>
     <div class="section-assignar-participante">
         <label for="circuito">Circuitos: </label>
+        <select id="circuito">
+            <option value=""></option>
+        </select>
+        <br> <br>
+        <label for="participantes">Participantes: </label>
+        <select id="participantes">
+            <option value=""></option>
+        </select>
+        <br>
+        <button id="assignar-participante">Asignar</button>
+        <button id="quitar-participante">Quitar</button>
+    </div>
+    <br> <br>
+    <div id="carrera">
+        <button id="cargar-circuito">Cargar Circuito</button>
+        <br> <br>
+        <div id="estadisticas-circuito"></div>
+         <br> <br>
+         <button id="iniciar-carrera">START</button>
+         <div id="resultados"></div>
     </div>
 </body>
 </html>
