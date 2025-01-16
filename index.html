@@ -17,8 +17,8 @@
         <datalist id="lista-participantes"></datalist>
         <br> <br>
         <label for="vehiculo-participante"> Vehiculo Participante: </label>
-        <select  id="vehiculo-participante"></select>
-        <button id="guardar-participante">Guardar Participante</button>
+        <select id="vehiculo-participante"></select>
+        <button onclick="crearParticipante()" id="guardar-participante">Guardar Participante</button>
         <button id="cargar-estadisticas-participante">Cargar Estadísticas</button>
         <h3>Estadisticas Participante</h3>
         <label for="estadisticas-primero">Primeros Puestos:</label>
@@ -40,23 +40,23 @@
         <input type="text" name="modelo-vehiculo" id="seleccion-vehiculos" list="lista-vehiculos">
         <datalist id="lista-vehiculos"></datalist>
         <label for="minVelocidad"> Velocidad Minima: </label>
-        <input type="number" name="minVelocidad" min="0" placeholder="Min Vel">
+        <input type="number" id="minVelocidad" min="0" placeholder="Min Vel">
         <label for="maxVelocidad">Velocidad Maxima: </label>
-        <input type="number" name="maxVelocidad" min="10" placeholder="Max Vel">
+        <input type="number" id="maxVelocidad" min="10" placeholder="Max Vel">
         <br> <br>
         <label for="tipoTraccion">Tipo Tracción: </label>
-        <select  id="tipoTraccion">
-            <option value="dura"></option>
-            <option value="media"></option>
-            <option value="blanda"></option>
+        <select id="tipoTraccion">
+            <option value="dura">Dura</option>
+            <option value="media">Media</option>
+            <option value="blanda">Blanda</option>
         </select>
         <br> <br>
         <label for="tipoVehiculo">Tipo Vehiculo: </label>
         <select id="tipoVehiculo">
-            <option value="Moto"></option>
-            <option value="Coches"></option>
+            <option value="Moto">Moto</option>
+            <option value="Coche">Coche</option>
         </select>
-         <button id="nuevo-vehiculo">Nuevo Vehiculo</button>
+         <button onclick="crearVehiculo()" id="nuevo-vehiculo">Nuevo Vehiculo</button>
          <button id="estadisticas-vehiculo">Cargar Estadisticas</button>
     </div>
     <br>

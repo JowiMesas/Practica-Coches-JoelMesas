@@ -52,21 +52,78 @@ class Participante {
         this.fueraPodio = fueraPodio;
     }
 }
-const vehiculos = [
+let vehiculos = [
     new Coche('Lamborghini','blanda', 50, 180),
     new Coche('Ferrari', 'media', 60, 190),
     new Moto('Yamaha', 'dura', 40, 140),
     new Moto('Kawasaki', 'media', 45, 120),
     new Coche('Aston Martin', 'blanda', 55, 170)
 ]
-const participantes = [
+let participantes = [
     new Participante('Fernando Alonso',vehiculos[4],32, 57, 140, 400),
     new Participante('Marc Marquez', vehiculos[2], 24, 40, 57, 340),
     new Participante('Joel', vehiculos[1], 2, 4, 0, 16)
 ]
-vehiculos.forEach((vehiculo) => {
-    document.getElementById('lista-vehiculos').innerHTML +=`<option value="${vehiculo.modelo}">${vehiculo.modelo}</option>`;
-});
-participantes.forEach((participante) => {
-    document.getElementById('lista-participantes').innerHTML +=`<option value="${participante.nombre}"> ${participante.nombre}</option>`;
-})
+function actualizarDatalist() {
+    // Limpiar contenido previo de los datalist y select
+    document.getElementById('lista-vehiculos').innerHTML = '';
+    document.getElementById('lista-participantes').innerHTML = '';
+    document.getElementById('vehiculo-participante').innerHTML = '';
+
+    vehiculos.forEach((vehiculo) => {
+        document.getElementById('lista-vehiculos').innerHTML += `<option value="${vehiculo.modelo}">${vehiculo.modelo}</option>`;
+        document.getElementById('vehiculo-participante').innerHTML += `<option value="${vehiculo.modelo}">${vehiculo.modelo}</option>`;
+    });
+
+    participantes.forEach((participante) => {
+        document.getElementById('lista-participantes').innerHTML += `<option value="${participante.nombre}">${participante.nombre}</option>`;
+    });
+}
+actualizarDatalist();
+function crearParticipante() {
+    const nombreInput = document.getElementById('seleccion-participantes');
+    const modeloInput = document.getElementById('vehiculo-participante');
+    const nombre = nombreInput.value;
+    const modeloVehiculo = modeloInput.value;
+
+    const existe = participantes.find(participante => participante.nombre ==  nombre);
+    if(existe) {
+        alert("Este participante ya existe")
+        return;
+    }
+    const nuevoParticipante = new Participante(nombre,modeloVehiculo,0,0,0,0);
+    participantes.push(nuevoParticipante);
+    alert("Participante creado!");
+    actualizarDatalist();
+    nombreInput.value = '';
+    }
+    function crearVehiculo() {
+        const modeloInput = document.getElementById('seleccion-vehiculos');
+        const modeloVehiculo = modeloInput.value;
+        const minVelocidadInput = document.getElementById('minVelocidad');
+        const minVelocidad = minVelocidadInput.value;
+        const maxVelocidadInput = document.getElementById('maxVelocidad');
+        const maxVelocidad = maxVelocidadInput.value;
+        const tipoTraccion = document.getElementById('tipoTraccion').value;
+        const tipoVehiculo = document.getElementById('tipoVehiculo').value;
+
+
+        const existe = vehiculos.find(vehiculo => vehiculo.modelo == modeloVehiculo);
+        if (existe) {
+            alert("Ese modelo de vehiculo ya existe ")
+            return;
+        }
+        let nuevoVehiculo;
+        if(tipoVehiculo === "Moto") {
+            nuevoVehiculo = new Moto(modeloVehiculo,tipoTraccion ,minVelocidad,maxVelocidad);
+        } else if (tipoVehiculo === "Coche"){
+            nuevoVehiculo = new Coche(modeloVehiculo, tipoTraccion, minVelocidad, maxVelocidad);
+        }
+        vehiculos.push(nuevoVehiculo);
+        alert("Vehiculo creado correctamente!");
+        actualizarDatalist();
+        modeloInput.value = '';
+        minVelocidadInput.value = '';
+        maxVelocidadInput.value = '';
+
+}
