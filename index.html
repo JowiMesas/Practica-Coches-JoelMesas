@@ -57,7 +57,9 @@
             <option value="Coche">Coche</option>
         </select>
          <button onclick="crearVehiculo()" id="nuevo-vehiculo">Nuevo Vehiculo</button>
-         <button id="estadisticas-vehiculo">Cargar Estadisticas</button>
+         <button onclick="cargarEstadisticasVehiculo()" id="estadisticas-vehiculo">Cargar Estadisticas</button>
+         <br> <br>
+         <div id="vehiculo-estadisticas" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;"></div>
     </div>
     <br>
     <div class="section-nuevo-circuito">
@@ -76,10 +78,11 @@
             <option value="seco">Seco</option>
         </select>
         <br> <br>
-        <button id="nuevo-circuito">Nueva Carrera</button>
+        <button onclick="crearCircuito()" id="nuevo-circuito">Nueva Carrera</button>
     </div>
     <br>
     <div class="section-assignar-participante">
+        <h2>Assignar o Quitar Participantes</h2>
         <label for="circuito">Circuitos: </label>
         <select id="circuito">
             <option value=""></option>

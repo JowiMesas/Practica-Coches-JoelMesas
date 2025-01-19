@@ -73,7 +73,7 @@ function actualizarDatalist() {
     document.getElementById('lista-participantes').innerHTML = '';
     document.getElementById('vehiculo-participante').innerHTML = '';
     document.getElementById('participantes').innerHTML = '';
-
+    document.getElementById('circuito').innerHTML = '';
     vehiculos.forEach((vehiculo) => {
         document.getElementById('lista-vehiculos').innerHTML += `<option value="${vehiculo.modelo}">${vehiculo.modelo}</option>`;
         document.getElementById('vehiculo-participante').innerHTML += `<option value="${vehiculo.modelo}">${vehiculo.modelo}</option>`;
@@ -84,6 +84,9 @@ function actualizarDatalist() {
         document.getElementById('participantes').innerHTML += `<option value="${participante.nombre}">${participante.nombre}</option>`;
 
     });
+    circuitos.forEach((circuito) => {
+        document.getElementById('circuito').innerHTML += `<option value= "${circuito.nombre}">${circuito.nombre}</option>`;
+    })
 }
 actualizarDatalist();
 function crearParticipante() {
@@ -139,14 +142,50 @@ function crearParticipante() {
 function cargarEstadisticasParticipante() {
     const nombre = document.getElementById("seleccion-participantes").value;
 
-    const participante = participantes.find(participante => participante.nombre = nombre);
+    const participante = participantes.find(participante => participante.nombre == nombre);
     if(participante) {
         document.getElementById('estadisticas-primero').value = participante.primer_lugar;
         document.getElementById('estadisticas-segundo').value = participante.segundo_lugar;
         document.getElementById('estadisticas-tercero').value = participante.tercer_lugar;
         document.getElementById('estadisticas-fuera-podio').value = participante.fueraPodio;
         alert(`Estadisticas cargadas del participante ${nombre}`);
+        return;
     } else {
-        alert(`El participante ${nombre} no existe`);
+        alert(`El participante no existe`);
     }
+}
+function cargarEstadisticasVehiculo() {
+    const modeloVehiculo = document.getElementById("seleccion-vehiculos").value;
+
+    const vehiculo = vehiculos.find(vehiculo => vehiculo.modelo == modeloVehiculo);
+    if(vehiculo) {
+        const divEstadisticas = document.getElementById('vehiculo-estadisticas');
+        divEstadisticas.innerHTML = `
+            <h3>Estadísticas del Vehículo</h3>
+            <p><strong>Modelo:</strong> ${vehiculo.modelo}</p>
+            <p><strong>Tracción:</strong> ${vehiculo.traccion}</p>
+            <p><strong>Velocidad Mínima:</strong> ${vehiculo.minAvance}</p>
+            <p><strong>Velocidad Máxima:</strong> ${vehiculo.maxAvance}</p>
+        `;
+    } else {
+        alert("No existe ese Vehiculo");
+    }
+} 
+function crearCircuito() {
+    const nombreInput = document.getElementById("nombre-circuito");
+    const nombre = nombreInput.value;
+    const tiempo = document.getElementById("tiempo").value;
+    const longitudInput = document.getElementById("longitud");
+    const longitud = longitudInput.value;
+
+    const circuitoExistente = circuitos.find(circuito => circuito.nombre == nombre);
+    if(circuitoExistente) {
+        alert("Este circuito ya existe!");
+        return;
+    }
+    circuitos.push(new Circuito(nombre, tiempo, longitud));
+    alert("Circuito creado exitosamente!");
+    actualizarDatalist();
+    nombreInput.value = '';
+    longitudInput.value = '';
 }
