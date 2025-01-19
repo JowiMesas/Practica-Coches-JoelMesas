@@ -64,11 +64,15 @@ let participantes = [
     new Participante('Marc Marquez', vehiculos[2], 24, 40, 57, 340),
     new Participante('Joel', vehiculos[1], 2, 4, 0, 16)
 ]
+let circuitos = [
+    new Circuito('Montmelo', 'lluvioso', 1500)
+]
 function actualizarDatalist() {
     // Limpiar contenido previo de los datalist y select
     document.getElementById('lista-vehiculos').innerHTML = '';
     document.getElementById('lista-participantes').innerHTML = '';
     document.getElementById('vehiculo-participante').innerHTML = '';
+    document.getElementById('participantes').innerHTML = '';
 
     vehiculos.forEach((vehiculo) => {
         document.getElementById('lista-vehiculos').innerHTML += `<option value="${vehiculo.modelo}">${vehiculo.modelo}</option>`;
@@ -77,6 +81,8 @@ function actualizarDatalist() {
 
     participantes.forEach((participante) => {
         document.getElementById('lista-participantes').innerHTML += `<option value="${participante.nombre}">${participante.nombre}</option>`;
+        document.getElementById('participantes').innerHTML += `<option value="${participante.nombre}">${participante.nombre}</option>`;
+
     });
 }
 actualizarDatalist();
@@ -112,6 +118,9 @@ function crearParticipante() {
         if (existe) {
             alert("Ese modelo de vehiculo ya existe ")
             return;
+        } else if(minVelocidad >= maxVelocidad) {
+            alert("La velocidad minima tiene que ser menor que la mayor");
+            return;
         }
         let nuevoVehiculo;
         if(tipoVehiculo === "Moto") {
@@ -126,4 +135,18 @@ function crearParticipante() {
         minVelocidadInput.value = '';
         maxVelocidadInput.value = '';
 
+}
+function cargarEstadisticasParticipante() {
+    const nombre = document.getElementById("seleccion-participantes").value;
+
+    const participante = participantes.find(participante => participante.nombre = nombre);
+    if(participante) {
+        document.getElementById('estadisticas-primero').value = participante.primer_lugar;
+        document.getElementById('estadisticas-segundo').value = participante.segundo_lugar;
+        document.getElementById('estadisticas-tercero').value = participante.tercer_lugar;
+        document.getElementById('estadisticas-fuera-podio').value = participante.fueraPodio;
+        alert(`Estadisticas cargadas del participante ${nombre}`);
+    } else {
+        alert(`El participante ${nombre} no existe`);
+    }
 }
