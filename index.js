@@ -40,6 +40,16 @@ class Coche extends Vehiculo {
 constructor(modelo, traccion, minAvance, maxAvance) {
     super(modelo, traccion, minAvance, maxAvance);
 }
+calcularAvance(tiempo) {
+    let avance = Math.floor(Math.random() * (this.maxAvance - this.minAvance + 1)) + this.minAvance;
+    const modificadores = {
+        lluvioso: {blanda: 4, mediana: 2, dura: 0},
+        humedo: {blanda: 2, mediana: 2, dura: 2},
+        seco: {blanda: 0, mediana: 2, dura: 4},
+    };
+    avance += modificadores[tiempo][this.traccion];
+    return avance;
+}
 }
 
 class Participante {
