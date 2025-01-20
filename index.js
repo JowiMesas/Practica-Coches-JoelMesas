@@ -4,6 +4,7 @@ constructor(nombre,tiempo, longitud) {
     this.nombre = nombre;
     this.tiempo = tiempo;
     this.longitud = longitud;
+    this.participantes = [];
 }
 }
 class Vehiculo {
@@ -16,9 +17,9 @@ class Vehiculo {
 }
 
 class Moto extends Vehiculo {
-    caida = false;
     constructor(modelo, traccion, minAvance, maxAvance) {
         super(modelo, traccion, minAvance, maxAvance);
+        this.caida = false;
     }
     calcularAvance(tiempo) {
         let avance = Math.floor(Math.random() * (this.maxAvance - this.minAvance + 1)) + this.minAvance;
@@ -27,13 +28,15 @@ class Moto extends Vehiculo {
         } else if (this.traccion === 'mediana') {
             avance +=2
         }
-        // seCae(tiempo){
-        //     const porcentajes = {
-        //         lluvioso: {dura: 30, media: 20, blanda: 5},
-        //         humedo: {dura: 20, media: 10, blanda: 5},
-        //         seco: {dura: 5,media: 5, blanda: 5}
-        //     };
-        // }
+    }
+    seCae(tiempo){
+        const porcentajes = {
+            lluvioso: {dura: 30, media: 20, blanda: 5},
+            humedo: {dura: 20, media: 10, blanda: 5},
+            seco: {dura: 5,media: 5, blanda: 5},
+        };
+        const chance = porcentajes[tiempo][this.traccion];
+        return Math.random() * 100 < chance;
     }
 }
 class Coche extends Vehiculo {
@@ -84,6 +87,7 @@ function actualizarDatalist() {
     document.getElementById('vehiculo-participante').innerHTML = '';
     document.getElementById('participantes').innerHTML = '';
     document.getElementById('circuito').innerHTML = '';
+    document.getElementById('seleccionar-circuito').innerHTML = '';
     vehiculos.forEach((vehiculo) => {
         document.getElementById('lista-vehiculos').innerHTML += `<option value="${vehiculo.modelo}">${vehiculo.modelo}</option>`;
         document.getElementById('vehiculo-participante').innerHTML += `<option value="${vehiculo.modelo}">${vehiculo.modelo}</option>`;
@@ -96,6 +100,7 @@ function actualizarDatalist() {
     });
     circuitos.forEach((circuito) => {
         document.getElementById('circuito').innerHTML += `<option value= "${circuito.nombre}">${circuito.nombre}</option>`;
+        document.getElementById('seleccionar-circuito').innerHTML += `<option value= "${circuito.nombre}">${circuito.nombre}</option>`;
     })
 }
 actualizarDatalist();
@@ -104,7 +109,10 @@ function crearParticipante() {
     const modeloInput = document.getElementById('vehiculo-participante');
     const nombre = nombreInput.value;
     const modeloVehiculo = modeloInput.value;
-
+    if(!nombre) {
+        alert("El nombre no puede estar vacio");
+        return;
+    }
     const existe = participantes.find(participante => participante.nombre ==  nombre);
     if(existe) {
         alert("Este participante ya existe")
@@ -125,13 +133,17 @@ function crearParticipante() {
         const maxVelocidad = maxVelocidadInput.value;
         const tipoTraccion = document.getElementById('tipoTraccion').value;
         const tipoVehiculo = document.getElementById('tipoVehiculo').value;
-
+        if(!modeloVehiculo || !minVelocidad || !maxVelocidad) {
+            alert("Todos los campos tienen que estar rellenados")
+            return;
+        }
 
         const existe = vehiculos.find(vehiculo => vehiculo.modelo == modeloVehiculo);
         if (existe) {
             alert("Ese modelo de vehiculo ya existe ")
             return;
-        } else if(minVelocidad >= maxVelocidad) {
+        } 
+         if(minVelocidad >= maxVelocidad) {
             alert("La velocidad minima tiene que ser menor que la mayor");
             return;
         }
@@ -187,7 +199,10 @@ function crearCircuito() {
     const tiempo = document.getElementById("tiempo").value;
     const longitudInput = document.getElementById("longitud");
     const longitud = longitudInput.value;
-
+    if(!nombre || !longitud) {
+        alert("Has de rellenar todos los campos");
+        return;
+    }
     const circuitoExistente = circuitos.find(circuito => circuito.nombre == nombre);
     if(circuitoExistente) {
         alert("Este circuito ya existe!");
@@ -198,4 +213,58 @@ function crearCircuito() {
     actualizarDatalist();
     nombreInput.value = '';
     longitudInput.value = '';
+}
+function asignarParticipantes() {
+    const nombreCircuito = document.getElementById("circuito").value;
+    const nombreParticipante = document.getElementById("participantes").value;
+
+    const circuito = circuitos.find(circuito => circuito.nombre == nombreCircuito);
+    const participante = participantes.find(participante => participante.nombre == nombreParticipante);
+    if(circuito.participantes.includes(participante)) {
+        alert("Este participante ya esta asignado a este circuito");
+        return;
+    }
+    circuito.participantes.push(participante);
+    alert(`Participante ${nombreParticipante} asignado al circuito ${nombreCircuito}.`);
+    actualizarParticipantesAsignados(circuito);
+
+}
+function quitarParticipantes() {
+    const nombreCircuito = document.getElementById("circuito").value;
+    const nombreParticipante = document.getElementById("participantes").value;
+
+    const circuito = circuitos.find(circuito => circuito.nombre == nombreCircuito);
+    const participante = participantes.find(participante => participante.nombre == nombreParticipante);
+
+    const posicion = circuito.participantes.indexOf(participante);
+    if(posicion === -1) {
+        alert("Este participante no se ha asignado al circuito");
+        return;
+    }
+    circuito.participantes.splice(posicion, 1);
+    alert(`Participante ${nombreParticipante} eliminado del circuito ${nombreCircuito}.`);
+    actualizarParticipantesAsignados(circuito);
+
+}
+function actualizarParticipantesAsignados(circuito) {
+    const listaAsignados = document.getElementById("participantes-asignados");
+    listaAsignados.innerHTML = "";
+
+    circuito.participantes.forEach(participante => {
+        const li = document.createElement("li");
+        li.textContent = participante.nombre;
+        listaAsignados.appendChild(li);
+    });
+}
+function cargarCircuito() {
+    const nombreCircuito = document.getElementById("seleccionar-circuito").value;
+    const circuito = circuitos.find(circuito => circuito.nombre == nombreCircuito);
+
+    const estadisticasDiv = document.getElementById("estadisticas-circuito");
+    estadisticasDiv.innerHTML = `
+       <h3>Estadísticas del Circuito</h3>
+        <p><strong>Nombre:</strong> ${circuito.nombre}</p>
+        <p><strong>Longitud:</strong> ${circuito.longitud} metros</p>
+        <p><strong>Tiempo:</strong> ${circuito.tiempo}</p>
+    `;
 }

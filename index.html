@@ -22,7 +22,7 @@
         <button onclick="cargarEstadisticasParticipante()" id="cargar-estadisticas-participante">Cargar Estadísticas</button>
         <h3>Estadisticas Participante</h3>
         <label for="estadisticas-primero">Primeros Puestos:</label>
-        <input type="number" id="estadisticas-primero" value="0" readonly>
+        <input type="number"  id="estadisticas-primero" value="0"  readonly>
         <br> <br>
         <label for="estadisticas-segundo">Segundos Puestos:</label>
         <input type="number" id="estadisticas-segundo" value="0" readonly>
@@ -92,16 +92,22 @@
         <select id="participantes">
             <option value=""></option>
         </select>
-        <br>
-        <button id="assignar-participante">Asignar</button>
-        <button id="quitar-participante">Quitar</button>
+        <br> <br>
+        <button onclick="asignarParticipantes() " id="assignar-participante">Asignar</button>
+        <button onclick="quitarParticipantes() " id="quitar-participante">Quitar</button>
+        <h3>Participantes Asignados</h3>
+        <ul id="participantes-asignados"></ul>
     </div>
     <br> <br>
     <div id="carrera">
-        <button id="cargar-circuito">Cargar Circuito</button>
+        <h2>Iniciar Carrera</h2>
+        <label for="seleccionar-circuito">Selecciona el circuito</label>
+        <select id="seleccionar-circuito"></select>
+        <br> <br>
+        <button onclick="cargarCircuito()" id="cargar-circuito">Cargar Circuito</button>
         <br> <br>
         <div id="estadisticas-circuito"></div>
-         <br> <br>
+         <br>
          <button id="iniciar-carrera">START</button>
          <div id="resultados"></div>
     </div>
