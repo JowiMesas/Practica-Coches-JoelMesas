@@ -268,3 +268,12 @@ function cargarCircuito() {
         <p><strong>Tiempo:</strong> ${circuito.tiempo}</p>
     `;
 }
+function iniciarCarrera() {
+    const nombreCircuito = document.getElementById("seleccionar-circuito").value;
+    const circuito = circuitos.find(c => c.nombre === nombreCircuito);
+
+    if(circuito.participantes.length <= 1) {
+        alert("Asigna al menos 2 participante en el circuito!");
+        return;
+    }
+}
