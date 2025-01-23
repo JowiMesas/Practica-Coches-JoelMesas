@@ -143,10 +143,10 @@ function crearParticipante() {
             alert("Ese modelo de vehiculo ya existe ")
             return;
         } 
-         if(minVelocidad >= maxVelocidad) {
-            alert("La velocidad minima tiene que ser menor que la mayor");
-            return;
-        }
+        //  if(minVelocidad >= maxVelocidad) {
+        //     alert("La velocidad minima tiene que ser menor que la mayor");
+        //     return;
+        // }
         let nuevoVehiculo;
         if(tipoVehiculo === "Moto") {
             nuevoVehiculo = new Moto(modeloVehiculo,tipoTraccion ,minVelocidad,maxVelocidad);
@@ -224,6 +224,10 @@ function asignarParticipantes() {
         alert("Este participante ya esta asignado a este circuito");
         return;
     }
+    if(circuito.participantes.length == 5) {
+        alert("Solo se pueden asginar 5 participantes por circuito!");
+        return;
+    }
     circuito.participantes.push(participante);
     alert(`Participante ${nombreParticipante} asignado al circuito ${nombreCircuito}.`);
     actualizarParticipantesAsignados(circuito);
@@ -276,4 +280,28 @@ function iniciarCarrera() {
         alert("Asigna al menos 2 participante en el circuito!");
         return;
     }
+    const pista = document.getElementById("circuito-visual");
+    pista.innerHTML = "";
+    const desplazamientoInicial = 20; 
+    circuito.participantes.forEach((participante, index) => {
+        const div = document.createElement("div");
+        div.style.left = "0px"; // Posición inicial en la pista
+        div.style.top = `${desplazamientoInicial + index * 40}px`; // Ajuste para todos
+        div.style.backgroundImage =
+            participante.vehiculo instanceof Moto
+                ? "url('motos.png')"
+                : "url('coches.png')";
+        div.style.width = "70px";
+        div.style.height = "70px";
+        div.style.position = "absolute";
+        div.id = `participante-${index}`;
+        pista.appendChild(div);
+    });
+    const intervalo = setInterval(()=> {
+        let carreraAcabada = false;
+        for(let i = 0; i < circuito.participantes.length; i++) {
+
+        }
+    }, 500);    
+
 }
