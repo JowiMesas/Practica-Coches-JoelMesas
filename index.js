@@ -68,7 +68,7 @@ calcularAvance(tiempo) {
         seco: {blanda: 0, media: 2, dura: 4},
     };
     avance += modificadores[tiempo][this.traccion];
-    return avance;
+    return Math.min(avance, this.maxAvance); 
 }
 }
 
@@ -344,5 +344,5 @@ function iniciarCarrera() {
     }, 500);
 }
 function mostrarResultados (){
-    
+
 }
