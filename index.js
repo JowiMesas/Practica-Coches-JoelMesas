@@ -20,14 +20,31 @@ class Moto extends Vehiculo {
     constructor(modelo, traccion, minAvance, maxAvance) {
         super(modelo, traccion, minAvance, maxAvance);
         this.caida = false;
+        this.turnosCaida = 0;
     }
     calcularAvance(tiempo) {
-        let avance = Math.floor(Math.random() * (this.maxAvance - this.minAvance + 1)) + this.minAvance;
-        if(this.traccion === 'dura') {
-            avance += 5;
-        } else if (this.traccion === 'mediana') {
-            avance +=2
+        if (this.caida) {
+            this.turnosCaida--;
+            if (this.turnosCaida === 0) this.caida = false;
+            return 0; // No avanza si está caída
         }
+    
+        const avanceBase = Math.floor(Math.random() * (this.maxAvance - this.minAvance + 1)) + this.minAvance;
+        let avance = avanceBase;
+    
+        if (this.traccion === "dura") {
+            avance += 5;
+        } else if (this.traccion === "mediana") {
+            avance += 2;
+        }
+    
+        if (this.seCae(tiempo)) {
+            this.caida = true;
+            this.turnosCaida = 5; 
+            return 0;
+        }
+    
+        return Math.min(avance, this.maxAvance); 
     }
     seCae(tiempo){
         const porcentajes = {
@@ -46,9 +63,9 @@ constructor(modelo, traccion, minAvance, maxAvance) {
 calcularAvance(tiempo) {
     let avance = Math.floor(Math.random() * (this.maxAvance - this.minAvance + 1)) + this.minAvance;
     const modificadores = {
-        lluvioso: {blanda: 4, mediana: 2, dura: 0},
-        humedo: {blanda: 2, mediana: 2, dura: 2},
-        seco: {blanda: 0, mediana: 2, dura: 4},
+        lluvioso: {blanda: 4, media: 2, dura: 0},
+        humedo: {blanda: 2, media: 2, dura: 2},
+        seco: {blanda: 0, media: 2, dura: 4},
     };
     avance += modificadores[tiempo][this.traccion];
     return avance;
@@ -118,7 +135,9 @@ function crearParticipante() {
         alert("Este participante ya existe")
         return;
     }
-    const nuevoParticipante = new Participante(nombre,modeloVehiculo,0,0,0,0);
+    const vehiculoSeleccionado = vehiculos.find((vehiculo) => vehiculo.modelo === modeloVehiculo);
+
+    const nuevoParticipante = new Participante(nombre,vehiculoSeleccionado,0,0,0,0);
     participantes.push(nuevoParticipante);
     alert("Participante creado!");
     actualizarDatalist();
@@ -297,11 +316,33 @@ function iniciarCarrera() {
         div.id = `participante-${index}`;
         pista.appendChild(div);
     });
-    const intervalo = setInterval(()=> {
-        let carreraAcabada = false;
-        for(let i = 0; i < circuito.participantes.length; i++) {
+    let distanciaRecorrida = Array(circuito.participantes.length).fill(0);
 
+    const intervalo = setInterval(() => {
+        let carreraTerminada = false;
+
+        circuito.participantes.forEach((participante, index) => {
+            // Si el participante ya llegó a la meta, no avanzar
+            if (distanciaRecorrida[index] >= circuito.longitud) return;
+            const avance = participante.vehiculo.calcularAvance(circuito.tiempo);
+            distanciaRecorrida[index] += avance;
+
+            const div = document.getElementById(`participante-${index}`);
+            div.style.left = `${(distanciaRecorrida[index] / circuito.longitud) * 100}%`;
+
+            // Comprobar si el participante llegó a la meta
+            if (distanciaRecorrida[index] >= circuito.longitud) {
+                distanciaRecorrida[index] = circuito.longitud;
+                carreraTerminada = true;
+            }
+        });
+
+        // Si la carrera termina
+        if (carreraTerminada) {
+            clearInterval(intervalo);
         }
-    }, 500);    
-
+    }, 500);
+}
+function mostrarResultados (){
+    
 }
