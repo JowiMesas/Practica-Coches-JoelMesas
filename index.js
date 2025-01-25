@@ -147,9 +147,9 @@ function crearParticipante() {
         const modeloInput = document.getElementById('seleccion-vehiculos');
         const modeloVehiculo = modeloInput.value;
         const minVelocidadInput = document.getElementById('minVelocidad');
-        const minVelocidad = minVelocidadInput.value;
+        const minVelocidad = parseInt(minVelocidadInput.value)
         const maxVelocidadInput = document.getElementById('maxVelocidad');
-        const maxVelocidad = maxVelocidadInput.value;
+        const maxVelocidad = parseInt(maxVelocidadInput.value);
         const tipoTraccion = document.getElementById('tipoTraccion').value;
         const tipoVehiculo = document.getElementById('tipoVehiculo').value;
         if(!modeloVehiculo || !minVelocidad || !maxVelocidad) {
@@ -162,10 +162,10 @@ function crearParticipante() {
             alert("Ese modelo de vehiculo ya existe ")
             return;
         } 
-        //  if(minVelocidad >= maxVelocidad) {
-        //     alert("La velocidad minima tiene que ser menor que la mayor");
-        //     return;
-        // }
+         if(minVelocidad >= maxVelocidad) {
+            alert("La velocidad minima tiene que ser menor que la mayor");
+            return;
+        }
         let nuevoVehiculo;
         if(tipoVehiculo === "Moto") {
             nuevoVehiculo = new Moto(modeloVehiculo,tipoTraccion ,minVelocidad,maxVelocidad);
@@ -295,17 +295,19 @@ function iniciarCarrera() {
     const nombreCircuito = document.getElementById("seleccionar-circuito").value;
     const circuito = circuitos.find(c => c.nombre === nombreCircuito);
 
-    if(circuito.participantes.length <= 1) {
-        alert("Asigna al menos 2 participante en el circuito!");
+    if (circuito.participantes.length <= 1) {
+        alert("Asigna al menos 2 participantes al circuito!");
         return;
     }
+
     const pista = document.getElementById("circuito-visual");
     pista.innerHTML = "";
-    const desplazamientoInicial = 20; 
+    const desplazamientoInicial = 20;
+
     circuito.participantes.forEach((participante, index) => {
         const div = document.createElement("div");
         div.style.left = "0px"; // Posición inicial en la pista
-        div.style.top = `${desplazamientoInicial + index * 40}px`; // Ajuste para todos
+        div.style.top = `${desplazamientoInicial + index * 40}px`; // Ajuste vertical
         div.style.backgroundImage =
             participante.vehiculo instanceof Moto
                 ? "url('motos.png')"
@@ -316,33 +318,60 @@ function iniciarCarrera() {
         div.id = `participante-${index}`;
         pista.appendChild(div);
     });
+
     let distanciaRecorrida = Array(circuito.participantes.length).fill(0);
+    let participantesTerminados = 0; // Participantes que acaban la carrera
 
     const intervalo = setInterval(() => {
-        let carreraTerminada = false;
-
+        let carreraTerminada = false; 
+    
         circuito.participantes.forEach((participante, index) => {
-            // Si el participante ya llegó a la meta, no avanzar
-            if (distanciaRecorrida[index] >= circuito.longitud) return;
-            const avance = participante.vehiculo.calcularAvance(circuito.tiempo);
-            distanciaRecorrida[index] += avance;
-
-            const div = document.getElementById(`participante-${index}`);
-            div.style.left = `${(distanciaRecorrida[index] / circuito.longitud) * 100}%`;
-
-            // Comprobar si el participante llegó a la meta
-            if (distanciaRecorrida[index] >= circuito.longitud) {
-                distanciaRecorrida[index] = circuito.longitud;
-                carreraTerminada = true;
+            if (distanciaRecorrida[index] < circuito.longitud) { 
+                const avance = participante.vehiculo.calcularAvance(circuito.tiempo);
+                distanciaRecorrida[index] += avance;
+    
+                const div = document.getElementById(`participante-${index}`);
+                div.style.left = `${(distanciaRecorrida[index] / circuito.longitud) * 100}%`;
+    
+                if (distanciaRecorrida[index] >= circuito.longitud) {
+                    distanciaRecorrida[index] = circuito.longitud; 
+                    carreraTerminada = true;
+                }
             }
         });
-
-        // Si la carrera termina
+    
         if (carreraTerminada) {
             clearInterval(intervalo);
+            mostrarResultados(circuito, distanciaRecorrida);
         }
     }, 500);
 }
-function mostrarResultados (){
 
+function mostrarResultados(circuito, distanciaRecorrida) {
+    const resultados = [];
+    for (let index = 0; index < circuito.participantes.length; index++) {
+        resultados.push({
+            participante: circuito.participantes[index],
+            distancia: distanciaRecorrida[index],
+        });
+    }
+
+    // Ordenar los resultados en orden descendente por distancia
+    resultados.sort((a, b) => b.distancia - a.distancia);
+    const divResultados = document.getElementById("resultados-carrera");
+    divResultados.innerHTML = "<h3>Resultados de la Carrera</h3>";
+
+    // Mostrar los resultados ordenados
+    for (let index = 0; index < resultados.length; index++) {
+        const resultadosParticipantes = document.createElement("div");
+        resultadosParticipantes.textContent = `${index + 1}º ${resultados[index].participante.nombre} - ${resultados[index].distancia} metros`;
+        divResultados.appendChild(resultadosParticipantes);
+
+        if (index === 0) resultados[index].participante.primer_lugar++;
+        else if (index === 1) resultados[index].participante.segundo_lugar++;
+        else if (index === 2) resultados[index].participante.tercer_lugar++;
+        else resultados[index].participante.fueraPodio++;
+    }
+
+    alert("¡La carrera ha terminado! Consulta los resultados.");
 }
