@@ -6,138 +6,264 @@
     <title>Carrera de Vehiculos</title>
     <script src="index.js" defer></script>
     <style>
-        #circuito-visual {
-        position: relative;
-        width: 100%;
-        height: 200px;
-        border: 2px solid black;
-        background: url('carretera.png') repeat-x center;
-        background-size: auto 100%;
-        }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('cocheF1.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+}
 
-        #circuito-visual div {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 50px;
-            height: 50px;
-            background-size: contain;
-            background-repeat: no-repeat;
-        }
+nav {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+}
 
-        #resultados-carrera {
-            margin-top: 20px;
-        }
+nav button {
+    background-color: #66b3ff; 
+    border: none;
+    padding: 12px 24px;
+    margin: 0 8px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+nav button:hover {
+    background-color: #4da6ff; 
+    transform: scale(1.15); 
+}
+
+.section {
+    display: none;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+}
+
+.section.active {
+    display: block;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #66b3ff; 
+}
+
+h3 {
+    margin-bottom: 15px;
+}
+
+input, select {
+    padding: 8px;
+    margin: 10px;
+    border: 2px solid #66b3ff; 
+    border-radius: 5px;
+    background-color: transparent;
+    color: #fff;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #4da6ff; 
+}
+
+button {
+    background-color: #66b3ff; 
+    border: none;
+    padding: 12px 24px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+
+button:hover {
+    background-color: #4da6ff; 
+    transform: scale(1.1); 
+}
+
+#circuito-visual {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    border: 2px solid black;
+    background: url('carretera.png') repeat-x center;
+    background-size: auto 100%;
+}
+
+#circuito-visual div {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#resultados-carrera {
+    margin-top: 20px;
+}
+
+select {
+    color: #fff;  
+    background-color: rgba(0, 0, 0, 0.8);  
+    border: 2px solid #66b3ff; 
+}
+
+select option {
+    background-color: rgba(0, 0, 0, 0.7);  
+    color: #fff; 
+}
+
+select:focus {
+    border-color: #4da6ff;  
+    outline: none;
+}
+
+
+.section {
+    background-color: rgba(0, 0, 0, 0.75); 
+}
+
+/* Estadísticas del vehículo */
+#vehiculo-estadisticas {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+}
+
+#vehiculo-estadisticas h3 {
+    color: #66b3ff; 
+}
+
+#vehiculo-estadisticas p {
+    color: #fff;
+}
     </style>
 </head>
 <body>
-    <div class="section-participantes">
-        <h2>Gestión de Participantes</h2>
+    <!-- Navegación -->
+     <h1>Carrera de Vehiculos</h1>
+    <nav>
+        <button id="crearParticipanteBtn">Crear Participante</button>
+        <button id="crearVehiculoBtn">Crear Vehículo</button>
+        <button id="crearCircuitoBtn">Crear Circuito</button>
+        <button id="asignarParticipanteBtn">Asignar Participantes</button>
+        <button id="iniciarCarreraBtn">Iniciar Carrera</button>
+    </nav>
 
-        <label for="nombre-participante">
-            Nombre Participante:
-        </label>
+    <section id="section-participantes" class="section">
+        <h2>Gestión de Participantes</h2>
+        <label for="nombre-participante">Nombre Participante:</label>
         <input type="text" name="nombre-participante" id="seleccion-participantes" list="lista-participantes">
         <datalist id="lista-participantes"></datalist>
-        <br> <br>
-        <label for="vehiculo-participante"> Vehiculo Participante: </label>
+        <br><br>
+        <label for="vehiculo-participante">Vehiculo Participante:</label>
         <select id="vehiculo-participante"></select>
         <button onclick="crearParticipante()" id="guardar-participante">Guardar Participante</button>
         <button onclick="cargarEstadisticasParticipante()" id="cargar-estadisticas-participante">Cargar Estadísticas</button>
-        <h3>Estadisticas Participante</h3>
+        <h3>Estadísticas Participante</h3>
         <label for="estadisticas-primero">Primeros Puestos:</label>
-        <input type="number"  id="estadisticas-primero" value="0"  readonly>
-        <br> <br>
+        <input type="number" id="estadisticas-primero" value="0" readonly>
+        <br><br>
         <label for="estadisticas-segundo">Segundos Puestos:</label>
         <input type="number" id="estadisticas-segundo" value="0" readonly>
-        <br> <br>
+        <br><br>
         <label for="estadisticas-tercero">Terceros Puestos:</label>
         <input type="number" id="estadisticas-tercero" value="0" readonly>
-        <br> <br>
+        <br><br>
         <label for="estadisticas-fuera-podio">Fuera del Podio:</label>
         <input type="number" id="estadisticas-fuera-podio" value="0" readonly>
-    </div>
-    <br>
-    <div id="section-gestion-vehiculos">
-        <h2>Nuevo Vehiculo</h2>
-        <label for="modelo-vehiculo">Modelo: </label>
+    </section>
+
+    <section id="section-vehiculos" class="section">
+        <h2>Nuevo Vehículo</h2>
+        <label for="modelo-vehiculo">Modelo:</label>
         <input type="text" name="modelo-vehiculo" id="seleccion-vehiculos" list="lista-vehiculos">
         <datalist id="lista-vehiculos"></datalist>
-        <label for="minVelocidad"> Velocidad Minima: </label>
+        <label for="minVelocidad">Velocidad Mínima:</label>
         <input type="number" id="minVelocidad" min="0" placeholder="Min Vel">
-        <label for="maxVelocidad">Velocidad Maxima: </label>
+        <label for="maxVelocidad">Velocidad Máxima:</label>
         <input type="number" id="maxVelocidad" min="10" placeholder="Max Vel">
-        <br> <br>
-        <label for="tipoTraccion">Tipo Tracción: </label>
+        <br><br>
+        <label for="tipoTraccion">Tipo Tracción:</label>
         <select id="tipoTraccion">
             <option value="dura">Dura</option>
             <option value="media">Media</option>
             <option value="blanda">Blanda</option>
         </select>
-        <br> <br>
-        <label for="tipoVehiculo">Tipo Vehiculo: </label>
+        <br><br>
+        <label for="tipoVehiculo">Tipo Vehículo:</label>
         <select id="tipoVehiculo">
             <option value="Moto">Moto</option>
             <option value="Coche">Coche</option>
         </select>
-         <button onclick="crearVehiculo()" id="nuevo-vehiculo">Nuevo Vehiculo</button>
-         <button onclick="cargarEstadisticasVehiculo()" id="estadisticas-vehiculo">Cargar Estadisticas</button>
-         <br> <br>
-         <div id="vehiculo-estadisticas" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;"></div>
-    </div>
-    <br>
-    <div class="section-nuevo-circuito">
+        <button onclick="crearVehiculo()" id="nuevo-vehiculo">Nuevo Vehículo</button>
+        <button onclick="cargarEstadisticasVehiculo()" id="estadisticas-vehiculo">Cargar Estadísticas</button>
+        <div id="vehiculo-estadisticas"></div>
+    </section>
+
+    <section id="section-circuito" class="section">
         <h2>Nuevo Circuito</h2>
-        <br>
-        <label for="nombre-circuito">Nombre Circuito: </label>
+        <label for="nombre-circuito">Nombre Circuito:</label>
         <input type="text" id="nombre-circuito" placeholder="Nombre del Circuito">
-        <br> <br>
-        <label for="longitud">Longitud: </label>
+        <br><br>
+        <label for="longitud">Longitud:</label>
         <input type="number" id="longitud" min="100" placeholder="Introduce la longitud">
-        <br> <br>
-        <label for="tiempo">Tiempo: </label>
+        <br><br>
+        <label for="tiempo">Tiempo:</label>
         <select id="tiempo">
             <option value="lluvioso">Lluvioso</option>
-            <option value="humedo">Humedo</option>
+            <option value="humedo">Húmedo</option>
             <option value="seco">Seco</option>
         </select>
-        <br> <br>
+        <br><br>
         <button onclick="crearCircuito()" id="nuevo-circuito">Nueva Carrera</button>
-    </div>
-    <br>
-    <div class="section-assignar-participante">
-        <h2>Assignar o Quitar Participantes</h2>
-        <label for="circuito">Circuitos: </label>
+    </section>
+
+    <section id="section-assignar" class="section">
+        <h2>Asignar Participantes</h2>
+        <label for="circuito">Circuitos:</label>
         <select id="circuito">
             <option value=""></option>
         </select>
-        <br> <br>
-        <label for="participantes">Participantes: </label>
+        <br><br>
+        <label for="participantes">Participantes:</label>
         <select id="participantes">
             <option value=""></option>
         </select>
-        <br> <br>
-        <button onclick="asignarParticipantes() " id="assignar-participante">Asignar</button>
-        <button onclick="quitarParticipantes() " id="quitar-participante">Quitar</button>
+        <br><br>
+        <button onclick="asignarParticipantes()" id="assignar-participante">Asignar</button>
+        <button onclick="quitarParticipantes()" id="quitar-participante">Quitar</button>
         <h3>Participantes Asignados</h3>
         <ul id="participantes-asignados"></ul>
-    </div>
-    <br> <br>
-    <div id="carrera">
+    </section>
+
+    <section id="section-carrera" class="section">
         <h2>Iniciar Carrera</h2>
-        <label for="seleccionar-circuito">Selecciona el circuito</label>
+        <label for="seleccionar-circuito">Selecciona el circuito:</label>
         <select id="seleccionar-circuito"></select>
-        <br> <br>
+        <br><br>
         <button onclick="cargarCircuito()" id="cargar-circuito">Cargar Circuito</button>
-        <br> <br>
+        <br><br>
         <div id="estadisticas-circuito"></div>
-         <br>
-         <button onclick="iniciarCarrera()" id="iniciar-carrera">START</button>
-         <div id="simulacion-carrera">
+        <br>
+        <button onclick="iniciarCarrera()" id="iniciar-carrera">START</button>
+        <div id="simulacion-carrera">
             <div id="circuito-visual"></div>
             <br>
             <div id="resultados-carrera"></div>
         </div>
-    </div>
+    </section>
+
+    <script src="scripts.js"></script>
 </body>
 </html>
